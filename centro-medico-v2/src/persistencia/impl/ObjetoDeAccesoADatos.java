@@ -16,14 +16,12 @@ public class ObjetoDeAccesoADatos implements IObjetoDeAcessoADatos {
 
     @Override
     public boolean guardarMedico(Medico m){
-        boolean respuesta = false;
-
         if(!this.medicos.contains(m)){
             this.medicos.add(m);
-            respuesta = true;
+            return true;
         }
 
-        return respuesta;
+        return false;
 
 //        Implementación básica usando ciclos.
 //        for (Medico medicoActual : this.medicos){
