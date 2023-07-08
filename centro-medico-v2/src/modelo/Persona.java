@@ -8,9 +8,9 @@ public abstract class Persona {
     private String telefono;
 
     public Persona(String dni, String nombre, String telefono) {
-        this.dni = dni;
-        this.nombre = nombre;
-        this.telefono = telefono;
+        setDni(dni);
+        setNombre(nombre);
+        setTelefono(telefono);
     }
 
     public String getDni() {
