@@ -14,6 +14,7 @@ public class Main {
         probarBaseDeDatosConEnfermerasRepetidas();
         probarBaseDeDatosConParamedicosRepetidos();
         probarReportesDeMedicos();
+        probarReportesDePacientes();
     }
 
     public static void probarBaseDeDatosConMedicosRepetidos() {
@@ -27,7 +28,6 @@ public class Main {
     }
 
     public static void probarBaseDeDatosConPacientesRepetidos() {
-        //En esta prueba esperamos que no se puedan guardar registros duplicados.
         IObjetoDeAcessoADatos baseDeDatos = new ObjetoDeAccesoADatos();
         Paciente paciente1 = new Paciente("123", "Paciente", "555-555-555", "A+");
         Paciente paciente2 = new Paciente("123", "Paciente", "555-555-555", "A+");
@@ -70,5 +70,22 @@ public class Main {
         System.out.println(generadorDeReportes.generarReporteDeMedicos());
 
         System.out.println(generadorDeReportes.generarReporteDeMedicosPorEspecialidad(Medico.ESPECIALIDAD_GENERALISTA));
+    }
+
+    public static void probarReportesDePacientes() {
+        IObjetoDeAcessoADatos baseDeDatos = new ObjetoDeAccesoADatos();
+        IGeneradorDeReportes generadorDeReportes = new GeneradorDeReportes(baseDeDatos);
+
+        Paciente p1 = new Paciente("123", "Paciente 1", "321", "A+");
+        Paciente p2 = new Paciente("124", "Paciente 2", "322", "A+");
+        Paciente p3 = new Paciente("125", "Paciente 3", "323", "A-");
+
+        baseDeDatos.guardarPaciente(p1);
+        baseDeDatos.guardarPaciente(p2);
+        baseDeDatos.guardarPaciente(p3);
+
+        System.out.println(generadorDeReportes.generarReporteDePacientes());
+
+        System.out.println(generadorDeReportes.generarReporteDePacientesPorGrupoSanguineo("A+"));
     }
 }
