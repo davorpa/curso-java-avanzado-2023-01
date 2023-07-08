@@ -7,7 +7,7 @@ import modelo.impl.Paramedico;
 import persistencia.IObjetoDeAcessoADatos;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -15,7 +15,7 @@ public class ObjetoDeAccesoADatos implements IObjetoDeAcessoADatos {
 
     private final List<Medico> medicos = new ArrayList<>();
     private final List<Paciente> pacientes = new ArrayList<>();
-    private final Set<Enfermera> enfermeras = new HashSet<>();
+    private final Set<Enfermera> enfermeras = new LinkedHashSet<>();
     private final List<Paramedico> paramedicos = new ArrayList<>();
 
 
@@ -51,12 +51,7 @@ public class ObjetoDeAccesoADatos implements IObjetoDeAcessoADatos {
 
     @Override
     public boolean guardarEnfermera(final Enfermera e) {
-        //TODO: Implementar usando Set en vez de List
-        if (!this.enfermeras.contains(e)) {
-            this.enfermeras.add(e);
-            return true;
-        }
-        return false;
+        return this.enfermeras.add(e);
     }
 
     @Override
