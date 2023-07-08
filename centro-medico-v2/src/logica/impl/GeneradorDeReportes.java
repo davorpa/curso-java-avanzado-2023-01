@@ -4,7 +4,6 @@ import logica.IGeneradorDeReportes;
 import modelo.impl.Medico;
 import persistencia.IObjetoDeAcessoADatos;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

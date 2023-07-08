@@ -3,42 +3,63 @@ package persistencia;
 import modelo.impl.Enfermera;
 import modelo.impl.Medico;
 import modelo.impl.Paciente;
+import modelo.impl.Paramedico;
 
 import java.util.List;
 
 public interface IObjetoDeAcessoADatos { //Data Access Object
 
     /**
-     *
+     * Guarda un nuevo médico en el sistema.
      * @param m El {@link Medico} que se quiere guardar
-     * @return true si guard&oacute; el m&eacute;dico, false si el m&eacute;dico ya estaba registrado, en cuyo caso m no ser&aacute; guardado.
+     * @return true si guardó el médico, false si el médico ya estaba registrado, en cuyo caso {@code m} no será guardado.
      */
     boolean guardarMedico(Medico m);
 
     /**
-     *
+     * Guarda un nuevo paciente en el sistema.
      * @param p El {@link Paciente} que se quiere guardar
-     * @return true si se guardó el médico, false si el médico ya estaba registrado, en cuyo caso, p no será guardado.
+     * @return true si se guardó el paciente, false si el paciente ya estaba registrado, en cuyo caso, {@code p} no será guardado.
      */
     boolean guardarPaciente(Paciente p);
 
     /**
-     *
+     * Guarda una nueva enfermera en el sistema.
      * @param e La {@link Enfermera} que se quiere guardar
-     * @return true si se guardó el médico, false si el médico ya estaba registrado, en cuyo caso, p no será guardado.
+     * @return true si se guardó la enfermera, false si la enfermera ya estaba registrada, en cuyo caso, {@code e} no será guardada.
      */
     boolean guardarEnfermera(Enfermera e);
 
+    /**
+     * Guarda un nuevo paramédico en el sistema.
+     * @param p El paramédico que se quiere guardar
+     * @return true si guardó el paramédico, false si ya estaba registrado, en cuyo caso {@code p} no será guardado.
+     */
+    boolean guardarParamedico(Paramedico p);
 
     /**
-     *
-     * @return una @{@link List} inmodificable de objetos @{@link Medico}.
+     * Obtiene los médicos registrados en el sistema.
+     * @return una @{@link List} inmodificable de objetos {@link Medico}.
      */
     List<Medico> consultarMedicos();
 
+    /**
+     * Obtiene los pacientes registrados en el sistema.
+     * @return una @{@link List} inmodificable de objetos {@link Paciente}.
+     */
     List<Paciente> consultarPacientes();
 
+    /**
+     * Obtiene las enfermeras registradas en el sistema.
+     * @return una @{@link List} inmodificable de objetos {@link Enfermera}.
+     */
     List<Enfermera> consultarEnfermeras();
+
+    /**
+     * Obtiene los paramédicos registrados en el sistema.
+     * @return una @{@link List} inmodificable de objetos {@link Paramedico}.
+     */
+    List<Paramedico> consultarParamedicos();
 
     //TODO: Completar los otros métodos.
 }
