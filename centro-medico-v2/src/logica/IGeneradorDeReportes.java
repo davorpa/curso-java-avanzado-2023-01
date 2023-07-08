@@ -30,4 +30,10 @@ public interface IGeneradorDeReportes {
      * @return El reporte a ser mostrado en forma de cadena de caracteres.
      */
     String generarReporteDePacientesPorGrupoSanguineo(String grupoSanguineo);
+
+    /**
+     * Genera un reporte con las medias de edad de los pacientes agrupadas por grupo sanguíneo.
+     * @return El reporte a ser mostrado en forma de cadena de caracteres.
+     */
+    String generarReporteMediasDeEdadDePacienteAgrupadoPorGrupoSanguineo();
 }
