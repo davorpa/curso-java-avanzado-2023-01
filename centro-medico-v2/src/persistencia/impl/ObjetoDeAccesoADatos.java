@@ -20,6 +20,11 @@ public class ObjetoDeAccesoADatos implements IObjetoDeAcessoADatos {
 
 
     @Override
+    public void close() {
+
+    }
+
+    @Override
     public boolean guardarMedico(final Medico m) {
         if (!this.medicos.contains(m)) {
             this.medicos.add(m);
