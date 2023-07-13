@@ -7,7 +7,7 @@ import modelo.impl.Paramedico;
 
 import java.util.List;
 
-public interface IObjetoDeAcessoADatos { //Data Access Object
+public interface IObjetoDeAcessoADatos extends AutoCloseable { //Data Access Object
 
     /**
      * Guarda un nuevo médico en el sistema.
