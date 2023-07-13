@@ -42,12 +42,12 @@ public abstract class Persona {
         if (this == o) return true;
         if (!(o instanceof Persona)) return false;
         Persona persona = (Persona) o;
-        return Objects.equals(getDni(), persona.getDni()) && Objects.equals(getNombre(), persona.getNombre()) && Objects.equals(getTelefono(), persona.getTelefono());
+        return Objects.equals(getDni(), persona.getDni()) && Objects.equals(getNombre(), persona.getNombre());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getDni(), getNombre(), getTelefono());
+        return Objects.hash(getDni(), getNombre());
     }
 
     @Override
