@@ -60,14 +60,13 @@ public class Paciente extends Persona implements IPaciente {
     }
 
     @Override
-    public String toString() {
-        return "Paciente{" +
-                "dni='" + getDni() + '\'' +
-                ", nombre='" + getNombre() + '\'' +
-                ", telefono='" + getTelefono() + '\'' +
-                ", fechaNacimiento='" + getFechaNacimiento() + '\'' +
-                ", edad='" + getEdad() + '\'' +
-                ", grupoSanguineo='" + getGrupoSanguineo() + '\'' +
-                '}';
+    protected String defineObjType() {
+        return "Paciente";
+    }
+
+    @Override
+    protected String defineObjAttrs() {
+        return String.format("%s, fechaNacimiento='%s', edad='%s', grupoSanguineo='%s'",
+                super.defineObjAttrs(), getFechaNacimiento(), getEdad(), getGrupoSanguineo());
     }
 }

@@ -1,6 +1,5 @@
 package modelo.impl;
 
-import modelo.Persona;
 import modelo.ProfesionalDeLaSalud;
 
 import java.util.Objects;
@@ -22,5 +21,10 @@ public class Enfermera extends ProfesionalDeLaSalud {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode());
+    }
+
+    @Override
+    protected String defineObjType() {
+        return "Enfermera";
     }
 }

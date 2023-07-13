@@ -52,10 +52,14 @@ public abstract class Persona {
 
     @Override
     public String toString() {
-        return "Persona{" +
-                "dni='" + dni + '\'' +
-                ", nombre='" + nombre + '\'' +
-                ", telefono='" + telefono + '\'' +
-                '}';
+        return String.format("%s{%s}", defineObjType(), defineObjAttrs());
+    }
+
+    protected String defineObjType() {
+        return "Persona";
+    }
+
+    protected String defineObjAttrs() {
+        return String.format("dni='%s', nombre='%s', telefono='%s'", dni, nombre, telefono);
     }
 }

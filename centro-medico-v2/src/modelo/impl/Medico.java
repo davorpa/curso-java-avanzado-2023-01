@@ -36,4 +36,15 @@ public class Medico extends ProfesionalDeLaSalud {
     public int hashCode() {
         return Objects.hash(super.hashCode());
     }
+
+    @Override
+    protected String defineObjType() {
+        return "Médico";
+    }
+
+    @Override
+    protected String defineObjAttrs() {
+        return String.format("%s, especialidad='%s'",
+                super.defineObjAttrs(), getEspecialidad());
+    }
 }

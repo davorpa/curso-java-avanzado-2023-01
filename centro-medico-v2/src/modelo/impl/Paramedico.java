@@ -21,4 +21,9 @@ public class Paramedico extends ProfesionalDeLaSalud {
     public int hashCode() {
         return Objects.hash(super.hashCode());
     }
+
+    @Override
+    protected String defineObjType() {
+        return "Paramédico";
+    }
 }
