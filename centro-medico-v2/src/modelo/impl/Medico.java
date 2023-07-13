@@ -29,12 +29,11 @@ public class Medico extends ProfesionalDeLaSalud {
         if (this == o) return true;
         if (!(o instanceof Medico)) return false;
         if (!super.equals(o)) return false;
-        Medico medico = (Medico) o;
-        return Objects.equals(getEspecialidad(), medico.getEspecialidad());
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getEspecialidad());
+        return Objects.hash(super.hashCode());
     }
 }
