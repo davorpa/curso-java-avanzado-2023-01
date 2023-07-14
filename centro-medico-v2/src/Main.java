@@ -6,13 +6,14 @@ import modelo.impl.Paciente;
 import modelo.impl.Paramedico;
 import persistencia.IObjetoDeAcessoADatos;
 import persistencia.impl.ObjetoDeAccesoADatos;
+import persistencia.jdbc.ObjetoDeAccesoADatosEnH2;
 import presentacion.IPublicadorDeReportes;
 import presentacion.impl.PublicadorDeReportesEnPantalla;
 
 import java.time.LocalDate;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         probarBaseDeDatosConMedicosRepetidos();
         probarBaseDeDatosConPacientesRepetidos();
         probarBaseDeDatosConEnfermerasRepetidas();
@@ -20,6 +21,8 @@ public class Main {
         probarReportesDeMedicos();
         probarReportesDePacientes();
         probarPublicarEnPantallaReporteMediasDeEdadDePacienteAgrupadoPorGrupoSanguineo();
+        probarAccesoADatosH2ConPacientes();
+        probarAccesoADatosH2ConMedicos();
     }
 
     public static void probarBaseDeDatosConMedicosRepetidos() {
@@ -139,5 +142,39 @@ public class Main {
 
         final String reporte = generadorDeReportes.generarReporteMediasDeEdadDePacienteAgrupadoPorGrupoSanguineo();
         publicadorDeReportes.publicarReporte(reporte);
+    }
+
+    public static void probarAccesoADatosH2ConPacientes() throws Exception {
+        try (IObjetoDeAcessoADatos baseDeDatos = new ObjetoDeAccesoADatosEnH2()) {
+            Paciente p1 = new Paciente("123", "Paciente 1", "321",
+                    LocalDate.of(1983, 8, 18),
+                    "A+");
+            Paciente p2 = new Paciente("124", "Paciente 2", "322",
+                    LocalDate.of(1992, 4, 11),
+                    "A+");
+            Paciente p3 = new Paciente("125", "Paciente 3", "323",
+                    LocalDate.of(1948, 3, 2),
+                    "A-");
+
+            baseDeDatos.guardarPaciente(p1);
+            baseDeDatos.guardarPaciente(p2);
+            baseDeDatos.guardarPaciente(p3);
+
+            baseDeDatos.consultarPacientes().forEach(System.out::println);
+        };
+    }
+
+    public static void probarAccesoADatosH2ConMedicos() throws Exception {
+        try (IObjetoDeAcessoADatos baseDeDatos = new ObjetoDeAccesoADatosEnH2()) {
+            Medico m = new Medico("123", "Médico 1", "321", Medico.ESPECIALIDAD_GENERALISTA);
+            Medico m2 = new Medico("124", "Médico 2", "322", Medico.ESPECIALIDAD_GENERALISTA);
+            Medico m3 = new Medico("125", "Médico 3", "323", Medico.ESPECIALIDAD_PEDIATRIA);
+
+            baseDeDatos.guardarMedico(m);
+            baseDeDatos.guardarMedico(m2);
+            baseDeDatos.guardarMedico(m3);
+
+            baseDeDatos.consultarMedicos().forEach(System.out::println);
+        };
     }
 }

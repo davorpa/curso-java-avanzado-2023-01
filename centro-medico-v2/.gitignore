@@ -27,3 +27,9 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+## Project Databases ##
+data/*.db
+
+## Project Dependencies ##
+!**/lib/**.jar
