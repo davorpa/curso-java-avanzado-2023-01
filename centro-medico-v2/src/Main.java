@@ -23,6 +23,8 @@ public class Main {
         probarPublicarEnPantallaReporteMediasDeEdadDePacienteAgrupadoPorGrupoSanguineo();
         probarAccesoADatosH2ConPacientes();
         probarAccesoADatosH2ConMedicos();
+        probarAccesoADatosH2ConEnfermeras();
+        probarAccesoADatosH2ConParamedicos();
     }
 
     public static void probarBaseDeDatosConMedicosRepetidos() {
@@ -175,6 +177,34 @@ public class Main {
             baseDeDatos.guardarMedico(m3);
 
             baseDeDatos.consultarMedicos().forEach(System.out::println);
+        };
+    }
+
+    public static void probarAccesoADatosH2ConEnfermeras() throws Exception {
+        try (IObjetoDeAcessoADatos baseDeDatos = new ObjetoDeAccesoADatosEnH2()) {
+            Enfermera e = new Enfermera("223", "Enfermera 1", "351");
+            Enfermera e2 = new Enfermera("224", "Enfermera 2", "352");
+            Enfermera e3 = new Enfermera("225", "Enfermera 3", "353");
+
+            baseDeDatos.guardarEnfermera(e);
+            baseDeDatos.guardarEnfermera(e2);
+            baseDeDatos.guardarEnfermera(e3);
+
+            baseDeDatos.consultarEnfermeras().forEach(System.out::println);
+        };
+    }
+
+    public static void probarAccesoADatosH2ConParamedicos() throws Exception {
+        try (IObjetoDeAcessoADatos baseDeDatos = new ObjetoDeAccesoADatosEnH2()) {
+            Paramedico pm = new Paramedico("323", "Paramédico 1", "357");
+            Paramedico pm2 = new Paramedico("324", "Paramédico 2", "356");
+            Paramedico pm3 = new Paramedico("325", "Paramédico 3", "355");
+
+            baseDeDatos.guardarParamedico(pm);
+            baseDeDatos.guardarParamedico(pm2);
+            baseDeDatos.guardarParamedico(pm3);
+
+            baseDeDatos.consultarParamedicos().forEach(System.out::println);
         };
     }
 }

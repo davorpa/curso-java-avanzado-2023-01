@@ -118,13 +118,33 @@ public class ObjetoDeAccesoADatosEnH2 implements IObjetoDeAcessoADatos {
     @Override
     public boolean guardarEnfermera(final Enfermera e) {
         realizarConexionJDBC();
-        return false;
+        try (PreparedStatement stmt = conexionJDBC.prepareStatement(
+                "INSERT INTO enfermeras (dni, nombre, telefono) VALUES (?, ?, ?)")) {
+            stmt.setString(1, e.getDni());
+            stmt.setString(2, e.getNombre());
+            stmt.setString(3, e.getTelefono());
+            long filasAfectadas = stmt.executeLargeUpdate();
+
+            return filasAfectadas > 0;
+        } catch (SQLException ex) {
+            throw new PersistenciaException("No se pudo insertar enfermera.", ex);
+        }
     }
 
     @Override
     public boolean guardarParamedico(final Paramedico p) {
         realizarConexionJDBC();
-        return false;
+        try (PreparedStatement stmt = conexionJDBC.prepareStatement(
+                "INSERT INTO paramedicos (dni, nombre, telefono) VALUES (?, ?, ?)")) {
+            stmt.setString(1, p.getDni());
+            stmt.setString(2, p.getNombre());
+            stmt.setString(3, p.getTelefono());
+            long filasAfectadas = stmt.executeLargeUpdate();
+
+            return filasAfectadas > 0;
+        } catch (SQLException ex) {
+            throw new PersistenciaException("No se pudo insertar paramedico.", ex);
+        }
     }
 
     @Override
@@ -177,12 +197,44 @@ public class ObjetoDeAccesoADatosEnH2 implements IObjetoDeAcessoADatos {
     @Override
     public List<Enfermera> consultarEnfermeras() {
         realizarConexionJDBC();
-        return null;
+        try (PreparedStatement stmt = conexionJDBC.prepareStatement(
+                "SELECT dni, nombre, telefono FROM enfermeras")) {
+            try (ResultSet rs = stmt.executeQuery()) {
+                rs.beforeFirst();
+
+                List<Enfermera> list = new LinkedList<>();
+                while (rs.next()) {
+                    list.add(new Enfermera(
+                            rs.getString("dni"),
+                            rs.getString("nombre"),
+                            rs.getString("telefono")));
+                }
+                return list;
+            }
+        } catch (SQLException ex) {
+            throw new PersistenciaException("No se pudo consultar por enfermeras.", ex);
+        }
     }
 
     @Override
     public List<Paramedico> consultarParamedicos() {
         realizarConexionJDBC();
-        return null;
+        try (PreparedStatement stmt = conexionJDBC.prepareStatement(
+                "SELECT dni, nombre, telefono FROM paramedicos")) {
+            try (ResultSet rs = stmt.executeQuery()) {
+                rs.beforeFirst();
+
+                List<Paramedico> list = new LinkedList<>();
+                while (rs.next()) {
+                    list.add(new Paramedico(
+                            rs.getString("dni"),
+                            rs.getString("nombre"),
+                            rs.getString("telefono")));
+                }
+                return list;
+            }
+        } catch (SQLException ex) {
+            throw new PersistenciaException("No se pudo consultar por paramédicos.", ex);
+        }
     }
 }
