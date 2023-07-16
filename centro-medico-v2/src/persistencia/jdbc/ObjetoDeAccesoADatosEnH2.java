@@ -93,7 +93,7 @@ public class ObjetoDeAccesoADatosEnH2 implements IObjetoDeAcessoADatos {
 
             return filasAfectadas > 0;
         } catch (SQLException ex) {
-            throw new PersistenciaException("No se pudo insertar el médico.", ex);
+            throw new PersistenciaException("No se pudo insertar médico.", ex);
         }
     }
 
@@ -111,7 +111,7 @@ public class ObjetoDeAccesoADatosEnH2 implements IObjetoDeAcessoADatos {
 
             return filasAfectadas > 0;
         } catch (SQLException ex) {
-            throw new PersistenciaException("No se pudo insertar el paciente.", ex);
+            throw new PersistenciaException("No se pudo insertar paciente.", ex);
         }
     }
 
@@ -146,7 +146,7 @@ public class ObjetoDeAccesoADatosEnH2 implements IObjetoDeAcessoADatos {
                 return list;
             }
         } catch (SQLException ex) {
-            throw new PersistenciaException("No se pudo consultar los médicos.", ex);
+            throw new PersistenciaException("No se pudo consultar por médicos.", ex);
         }
     }
 
@@ -170,7 +170,7 @@ public class ObjetoDeAccesoADatosEnH2 implements IObjetoDeAcessoADatos {
                 return list;
             }
         } catch (SQLException ex) {
-            throw new PersistenciaException("No se pudo consultar los pacientes.", ex);
+            throw new PersistenciaException("No se pudo consultar por pacientes.", ex);
         }
     }
 
