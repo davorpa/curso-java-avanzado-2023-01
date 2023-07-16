@@ -51,6 +51,7 @@ public class ObjetoDeAccesoADatosEnH2 implements IObjetoDeAcessoADatos {
     protected synchronized void realizarConexionJDBC() {
         // Tener una instancia de conexión por DAO pero que inicialize la BBDD una sola vez.
         try {
+            if (esquemaDDBBcargado && conexionJDBC != null) return;
             synchronized (ObjetoDeAccesoADatosEnH2.class) {
                 if (esquemaDDBBcargado) {
                     if (conexionJDBC != null) return;
