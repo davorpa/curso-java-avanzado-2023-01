@@ -6,11 +6,7 @@ import modelo.impl.Paciente;
 import persistencia.IObjetoDeAcessoADatos;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class GeneradorDeReportes implements IGeneradorDeReportes {
@@ -63,10 +59,7 @@ public class GeneradorDeReportes implements IGeneradorDeReportes {
 
     @Override
     public String generarReporteDePacientesPorGrupoSanguineo(final String grupoSanguineo) {
-        List<Paciente> pacientes = baseDeDatos.consultarPacientes()
-                .stream()
-                .filter((Paciente p) -> Objects.equals(p.getGrupoSanguineo(), grupoSanguineo))
-                .collect(Collectors.toList());
+        List<Paciente> pacientes = baseDeDatos.consultarPacientesGrupoSanguineo(grupoSanguineo);
         return aplicarPlantillaDeReporteDePacientes(pacientes);
     }
 

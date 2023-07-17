@@ -6,6 +6,7 @@ import modelo.impl.Paciente;
 import modelo.impl.Paramedico;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public interface IObjetoDeAcessoADatos extends AutoCloseable { //Data Access Object
 
@@ -61,5 +62,16 @@ public interface IObjetoDeAcessoADatos extends AutoCloseable { //Data Access Obj
      */
     List<Paramedico> consultarParamedicos();
 
-    //TODO: Completar los otros métodos.
+    /**
+     * Obtiene los pacientes registrados en el sistema dado un grupo sanguíneo determinado.
+     * @return una @{@link List} inmodificable de objetos {@link Paciente}.
+     */
+    default List<Paciente> consultarPacientesGrupoSanguineo(String grupoSanguineo) {
+        return consultarPacientes()
+                .stream()
+                .filter(p -> grupoSanguineo == null
+                            ? p.getGrupoSanguineo() == null
+                            : grupoSanguineo.equalsIgnoreCase(p.getGrupoSanguineo()))
+                .collect(Collectors.toUnmodifiableList());
+    }
 }
