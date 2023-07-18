@@ -2,7 +2,7 @@ package persistencia.daoimpl;
 
 import modelo.impl.Paciente;
 import persistencia.H2ConnectorSupport;
-import persistencia.PacienteDAO;
+import persistencia.IPacienteDAO;
 import persistencia.PersistenciaException;
 
 import java.sql.PreparedStatement;
@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
-public class PacienteDaoEnH2 extends H2ConnectorSupport implements PacienteDAO {
+public class PacienteDaoEnH2 extends H2ConnectorSupport implements IPacienteDAO {
     @Override
     public List<Paciente> consultarTodos() {
         try (PreparedStatement stmt = realizarConexionJDBC().prepareStatement(
