@@ -1,8 +1,8 @@
 package persistencia.daoimpl;
 
 import modelo.impl.Paciente;
-import persistencia.DAO;
 import persistencia.H2ConnectorSupport;
+import persistencia.PacienteDAO;
 import persistencia.PersistenciaException;
 
 import java.sql.PreparedStatement;
@@ -12,11 +12,61 @@ import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
-public class PacienteDaoEnH2 extends H2ConnectorSupport implements DAO<Paciente, String> {
+public class PacienteDaoEnH2 extends H2ConnectorSupport implements PacienteDAO {
     @Override
     public List<Paciente> consultarTodos() {
         try (PreparedStatement stmt = realizarConexionJDBC().prepareStatement(
                 "SELECT dni, nombre, telefono, fecha_nacimiento, grupo_sanguineo FROM pacientes")) {
+            try (ResultSet rs = stmt.executeQuery()) {
+                rs.beforeFirst();
+
+                List<Paciente> list = new LinkedList<>();
+                while (rs.next()) {
+                    list.add(new Paciente(
+                            rs.getString("dni"),
+                            rs.getString("nombre"),
+                            rs.getString("telefono"),
+                            rs.getObject("fecha_nacimiento", LocalDate.class),
+                            rs.getString("grupo_sanguineo")));
+                }
+                return list;
+            }
+        } catch (SQLException ex) {
+            throw new PersistenciaException("No se pudo consultar por pacientes.", ex);
+        }
+    }
+
+    @Override
+    public List<Paciente> consultarTodosPorNombre(String nombre) {
+        try (PreparedStatement stmt = realizarConexionJDBC().prepareStatement(
+                "SELECT dni, nombre, telefono, fecha_nacimiento, grupo_sanguineo FROM pacientes WHERE nombre ILIKE ?")) {
+            stmt.setString(1, nombre == null ? null : "%" + nombre +"%");
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                rs.beforeFirst();
+
+                List<Paciente> list = new LinkedList<>();
+                while (rs.next()) {
+                    list.add(new Paciente(
+                            rs.getString("dni"),
+                            rs.getString("nombre"),
+                            rs.getString("telefono"),
+                            rs.getObject("fecha_nacimiento", LocalDate.class),
+                            rs.getString("grupo_sanguineo")));
+                }
+                return list;
+            }
+        } catch (SQLException ex) {
+            throw new PersistenciaException("No se pudo consultar por pacientes.", ex);
+        }
+    }
+
+    @Override
+    public List<Paciente> consultarTodosPorTelefono(String telefono) {
+        try (PreparedStatement stmt = realizarConexionJDBC().prepareStatement(
+                "SELECT dni, nombre, telefono, fecha_nacimiento, grupo_sanguineo FROM pacientes WHERE telefono ILIKE ?")) {
+            stmt.setString(1, telefono == null ? null : "%" + telefono +"%");
+
             try (ResultSet rs = stmt.executeQuery()) {
                 rs.beforeFirst();
 

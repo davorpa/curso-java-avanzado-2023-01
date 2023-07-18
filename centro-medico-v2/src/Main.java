@@ -4,8 +4,8 @@ import modelo.impl.Enfermera;
 import modelo.impl.Medico;
 import modelo.impl.Paciente;
 import modelo.impl.Paramedico;
-import persistencia.DAO;
 import persistencia.IObjetoDeAcessoADatos;
+import persistencia.PacienteDAO;
 import persistencia.daoimpl.PacienteDaoEnH2;
 import persistencia.impl.ObjetoDeAccesoADatos;
 import persistencia.jdbc.ObjetoDeAccesoADatosEnH2;
@@ -213,7 +213,7 @@ public class Main {
 
 
     public static void probarDaoH2ConPacientes() throws Exception {
-        try (DAO<Paciente, String> dao = new PacienteDaoEnH2()) {
+        try (PacienteDAO dao = new PacienteDaoEnH2()) {
 
             dao.consultarTodos().forEach(System.out::println);
 
@@ -232,6 +232,10 @@ public class Main {
 
             System.out.println(dao.eliminar("123A"));
             System.out.println(dao.consultarPorId("123A"));
+
+            dao.consultarTodosPorNombre("3").forEach(System.out::println);
+
+            dao.consultarTodosPorTelefono("322").forEach(System.out::println);
         }
     }
 }
