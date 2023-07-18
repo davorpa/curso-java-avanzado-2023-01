@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
-public class PacienteDaoEnH2 extends H2ConnectorSupport implements IPacienteDAO {
+public class PacienteDAOEnH2 extends H2ConnectorSupport implements IPacienteDAO {
     @Override
     public List<Paciente> consultarTodos() {
         try (PreparedStatement stmt = realizarConexionJDBC().prepareStatement(
