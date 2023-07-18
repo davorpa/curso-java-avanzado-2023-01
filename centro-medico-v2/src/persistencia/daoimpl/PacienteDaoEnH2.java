@@ -22,12 +22,7 @@ public class PacienteDaoEnH2 extends H2ConnectorSupport implements PacienteDAO {
 
                 List<Paciente> list = new LinkedList<>();
                 while (rs.next()) {
-                    list.add(new Paciente(
-                            rs.getString("dni"),
-                            rs.getString("nombre"),
-                            rs.getString("telefono"),
-                            rs.getObject("fecha_nacimiento", LocalDate.class),
-                            rs.getString("grupo_sanguineo")));
+                    list.add(tratarResultSetDeConsulta(rs));
                 }
                 return list;
             }
@@ -47,12 +42,7 @@ public class PacienteDaoEnH2 extends H2ConnectorSupport implements PacienteDAO {
 
                 List<Paciente> list = new LinkedList<>();
                 while (rs.next()) {
-                    list.add(new Paciente(
-                            rs.getString("dni"),
-                            rs.getString("nombre"),
-                            rs.getString("telefono"),
-                            rs.getObject("fecha_nacimiento", LocalDate.class),
-                            rs.getString("grupo_sanguineo")));
+                    list.add(tratarResultSetDeConsulta(rs));
                 }
                 return list;
             }
@@ -72,12 +62,7 @@ public class PacienteDaoEnH2 extends H2ConnectorSupport implements PacienteDAO {
 
                 List<Paciente> list = new LinkedList<>();
                 while (rs.next()) {
-                    list.add(new Paciente(
-                            rs.getString("dni"),
-                            rs.getString("nombre"),
-                            rs.getString("telefono"),
-                            rs.getObject("fecha_nacimiento", LocalDate.class),
-                            rs.getString("grupo_sanguineo")));
+                    list.add(tratarResultSetDeConsulta(rs));
                 }
                 return list;
             }
@@ -96,18 +81,22 @@ public class PacienteDaoEnH2 extends H2ConnectorSupport implements PacienteDAO {
                 rs.beforeFirst();
 
                 if (rs.next()) {
-                    return new Paciente(
-                            rs.getString("dni"),
-                            rs.getString("nombre"),
-                            rs.getString("telefono"),
-                            rs.getObject("fecha_nacimiento", LocalDate.class),
-                            rs.getString("grupo_sanguineo"));
+                    return tratarResultSetDeConsulta(rs);
                 }
             }
         } catch (SQLException ex) {
             throw new PersistenciaException("No se pudo consultar por paciente.", ex);
         }
         return null;
+    }
+
+    protected Paciente tratarResultSetDeConsulta(ResultSet rs) throws SQLException {
+        return new Paciente(
+                rs.getString("dni"),
+                rs.getString("nombre"),
+                rs.getString("telefono"),
+                rs.getObject("fecha_nacimiento", LocalDate.class),
+                rs.getString("grupo_sanguineo"));
     }
 
     @Override
