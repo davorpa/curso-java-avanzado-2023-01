@@ -6,8 +6,8 @@ import java.util.Objects;
 
 public class Enfermera extends ProfesionalDeLaSalud {
 
-    public Enfermera(String dni, String nombre, String telefono) {
-        super(dni, nombre, telefono);
+    public Enfermera(Integer id, String dni, String nombre, String telefono) {
+        super(id, dni, nombre, telefono);
     }
 
     @Override

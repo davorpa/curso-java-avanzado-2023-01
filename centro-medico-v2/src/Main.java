@@ -4,7 +4,9 @@ import modelo.impl.Enfermera;
 import modelo.impl.Medico;
 import modelo.impl.Paciente;
 import modelo.impl.Paramedico;
+import persistencia.DAO;
 import persistencia.IObjetoDeAcessoADatos;
+import persistencia.daoimpl.PacienteDaoEnH2;
 import persistencia.impl.ObjetoDeAccesoADatos;
 import persistencia.jdbc.ObjetoDeAccesoADatosEnH2;
 import presentacion.IPublicadorDeReportes;
@@ -25,13 +27,14 @@ public class Main {
         probarAccesoADatosH2ConMedicos();
         probarAccesoADatosH2ConEnfermeras();
         probarAccesoADatosH2ConParamedicos();
+        probarDaoH2ConPacientes();
     }
 
     public static void probarBaseDeDatosConMedicosRepetidos() {
         //En esta prueba esperamos que no se puedan guardar registros duplicados.
         IObjetoDeAcessoADatos baseDeDatos = new ObjetoDeAccesoADatos();
-        Medico m = new Medico("123", "Bla", "321", Medico.ESPECIALIDAD_GENERALISTA);
-        Medico m2 = new Medico("123", "Bla", "321", Medico.ESPECIALIDAD_GENERALISTA);
+        Medico m = new Medico(123, "123", "Bla", "321", Medico.ESPECIALIDAD_GENERALISTA);
+        Medico m2 = new Medico(123, "123", "Bla", "321", Medico.ESPECIALIDAD_GENERALISTA);
 
         System.out.println(baseDeDatos.guardarMedico(m));
         System.out.println(baseDeDatos.guardarMedico(m2));
@@ -53,8 +56,8 @@ public class Main {
     public static void probarBaseDeDatosConEnfermerasRepetidas() {
         //En esta prueba esperamos que no se puedan guardar registros duplicados.
         IObjetoDeAcessoADatos baseDeDatos = new ObjetoDeAccesoADatos();
-        Enfermera enfermera1 = new Enfermera("456", "Enfermera", "655-555-555");
-        Enfermera enfermera2 = new Enfermera("456", "Enfermera", "655-555-555");
+        Enfermera enfermera1 = new Enfermera(456,"456", "Enfermera", "655-555-555");
+        Enfermera enfermera2 = new Enfermera(456, "456", "Enfermera", "655-555-555");
 
         System.out.println(baseDeDatos.guardarEnfermera(enfermera1));
         System.out.println(baseDeDatos.guardarEnfermera(enfermera2));
@@ -63,8 +66,8 @@ public class Main {
     public static void probarBaseDeDatosConParamedicosRepetidos() {
         //En esta prueba esperamos que no se puedan guardar registros duplicados.
         IObjetoDeAcessoADatos baseDeDatos = new ObjetoDeAccesoADatos();
-        Paramedico paramedico1 = new Paramedico("789", "Paramédico", "555-655-555");
-        Paramedico paramedico2 = new Paramedico("789", "Paramédico", "555-655-555");
+        Paramedico paramedico1 = new Paramedico(789, "789", "Paramédico", "555-655-555");
+        Paramedico paramedico2 = new Paramedico(789, "789", "Paramédico", "555-655-555");
 
         System.out.println(baseDeDatos.guardarParamedico(paramedico1));
         System.out.println(baseDeDatos.guardarParamedico(paramedico2));
@@ -73,9 +76,9 @@ public class Main {
     public static void probarReportesDeMedicos() {
         IObjetoDeAcessoADatos baseDeDatos = new ObjetoDeAccesoADatos();
         IGeneradorDeReportes generadorDeReportes = new GeneradorDeReportes(baseDeDatos);
-        Medico m = new Medico("123", "Médico 1", "321", Medico.ESPECIALIDAD_GENERALISTA);
-        Medico m2 = new Medico("124", "Médico 2", "322", Medico.ESPECIALIDAD_GENERALISTA);
-        Medico m3 = new Medico("125", "Médico 3", "323", Medico.ESPECIALIDAD_PEDIATRIA);
+        Medico m = new Medico(123, "123", "Médico 1", "321", Medico.ESPECIALIDAD_GENERALISTA);
+        Medico m2 = new Medico(124, "124", "Médico 2", "322", Medico.ESPECIALIDAD_GENERALISTA);
+        Medico m3 = new Medico(125, "125", "Médico 3", "323", Medico.ESPECIALIDAD_PEDIATRIA);
 
         baseDeDatos.guardarMedico(m);
         baseDeDatos.guardarMedico(m2);
@@ -163,48 +166,57 @@ public class Main {
             baseDeDatos.guardarPaciente(p3);
 
             baseDeDatos.consultarPacientes().forEach(System.out::println);
-        };
+        }
     }
 
     public static void probarAccesoADatosH2ConMedicos() throws Exception {
         try (IObjetoDeAcessoADatos baseDeDatos = new ObjetoDeAccesoADatosEnH2()) {
-            Medico m = new Medico("123", "Médico 1", "321", Medico.ESPECIALIDAD_GENERALISTA);
-            Medico m2 = new Medico("124", "Médico 2", "322", Medico.ESPECIALIDAD_GENERALISTA);
-            Medico m3 = new Medico("125", "Médico 3", "323", Medico.ESPECIALIDAD_PEDIATRIA);
+            Medico m = new Medico(123,"123", "Médico 1", "321", Medico.ESPECIALIDAD_GENERALISTA);
+            Medico m2 = new Medico(124, "124", "Médico 2", "322", Medico.ESPECIALIDAD_GENERALISTA);
+            Medico m3 = new Medico(125, "125", "Médico 3", "323", Medico.ESPECIALIDAD_PEDIATRIA);
 
             baseDeDatos.guardarMedico(m);
             baseDeDatos.guardarMedico(m2);
             baseDeDatos.guardarMedico(m3);
 
             baseDeDatos.consultarMedicos().forEach(System.out::println);
-        };
+        }
     }
 
     public static void probarAccesoADatosH2ConEnfermeras() throws Exception {
         try (IObjetoDeAcessoADatos baseDeDatos = new ObjetoDeAccesoADatosEnH2()) {
-            Enfermera e = new Enfermera("223", "Enfermera 1", "351");
-            Enfermera e2 = new Enfermera("224", "Enfermera 2", "352");
-            Enfermera e3 = new Enfermera("225", "Enfermera 3", "353");
+            Enfermera e = new Enfermera(223, "223", "Enfermera 1", "351");
+            Enfermera e2 = new Enfermera(224, "224", "Enfermera 2", "352");
+            Enfermera e3 = new Enfermera(225, "225", "Enfermera 3", "353");
 
             baseDeDatos.guardarEnfermera(e);
             baseDeDatos.guardarEnfermera(e2);
             baseDeDatos.guardarEnfermera(e3);
 
             baseDeDatos.consultarEnfermeras().forEach(System.out::println);
-        };
+        }
     }
 
     public static void probarAccesoADatosH2ConParamedicos() throws Exception {
         try (IObjetoDeAcessoADatos baseDeDatos = new ObjetoDeAccesoADatosEnH2()) {
-            Paramedico pm = new Paramedico("323", "Paramédico 1", "357");
-            Paramedico pm2 = new Paramedico("324", "Paramédico 2", "356");
-            Paramedico pm3 = new Paramedico("325", "Paramédico 3", "355");
+            Paramedico pm = new Paramedico(323, "323", "Paramédico 1", "357");
+            Paramedico pm2 = new Paramedico(324, "324", "Paramédico 2", "356");
+            Paramedico pm3 = new Paramedico(325, "325", "Paramédico 3", "355");
 
             baseDeDatos.guardarParamedico(pm);
             baseDeDatos.guardarParamedico(pm2);
             baseDeDatos.guardarParamedico(pm3);
 
             baseDeDatos.consultarParamedicos().forEach(System.out::println);
-        };
+        }
+    }
+
+
+    public static void probarDaoH2ConPacientes() {
+        DAO<Paciente, String> dao = new PacienteDaoEnH2();
+
+        dao.consultarTodos().forEach(System.out::println);
+
+        System.out.println(dao.consultarPorId("123A"));
     }
 }

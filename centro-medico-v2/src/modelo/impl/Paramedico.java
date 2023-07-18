@@ -5,8 +5,8 @@ import modelo.ProfesionalDeLaSalud;
 import java.util.Objects;
 
 public class Paramedico extends ProfesionalDeLaSalud {
-    public Paramedico(String dni, String nombre, String telefono) {
-        super(dni, nombre, telefono);
+    public Paramedico(Integer id, String dni, String nombre, String telefono) {
+        super(id, dni, nombre, telefono);
     }
 
     @Override

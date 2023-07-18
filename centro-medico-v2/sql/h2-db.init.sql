@@ -13,20 +13,26 @@ CREATE TABLE IF NOT EXISTS pacientes (
 );
 
 CREATE TABLE IF NOT EXISTS medicos (
-    dni                VARCHAR(15) PRIMARY KEY,
+    id                 INT PRIMARY KEY,
+    dni                VARCHAR(15) NOT NULL,
     nombre             VARCHAR(255) NOT NULL,
     telefono           VARCHAR(15) NOT NULL,
-    especialidad       VARCHAR(50) NOT NULL
+    especialidad       VARCHAR(50) NOT NULL,
+    UNIQUE (dni)
 );
 
 CREATE TABLE IF NOT EXISTS enfermeras (
-    dni                VARCHAR(15) PRIMARY KEY,
+    id                 INT PRIMARY KEY,
+    dni                VARCHAR(15) NOT NULL,
     nombre             VARCHAR(255) NOT NULL,
-    telefono           VARCHAR(15) NOT NULL
+    telefono           VARCHAR(15) NOT NULL,
+    UNIQUE (dni)
 );
 
 CREATE TABLE IF NOT EXISTS paramedicos (
-    dni                VARCHAR(15) PRIMARY KEY,
+    id                 INT PRIMARY KEY,
+    dni                VARCHAR(15) NOT NULL,
     nombre             VARCHAR(255) NOT NULL,
-    telefono           VARCHAR(15) NOT NULL
+    telefono           VARCHAR(15) NOT NULL,
+    UNIQUE (dni)
 );

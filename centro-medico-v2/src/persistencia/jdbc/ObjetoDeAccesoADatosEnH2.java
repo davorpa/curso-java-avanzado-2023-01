@@ -84,11 +84,12 @@ public class ObjetoDeAccesoADatosEnH2 implements IObjetoDeAcessoADatos {
     public boolean guardarMedico(final Medico m) {
         realizarConexionJDBC();
         try (PreparedStatement stmt = conexionJDBC.prepareStatement(
-                "INSERT INTO medicos (dni, nombre, telefono, especialidad) VALUES (?, ?, ?, ?)")) {
-            stmt.setString(1, m.getDni());
-            stmt.setString(2, m.getNombre());
-            stmt.setString(3, m.getTelefono());
-            stmt.setObject(4, m.getEspecialidad());
+                "INSERT INTO medicos (id, dni, nombre, telefono, especialidad) VALUES (?, ?, ?, ?, ?)")) {
+            stmt.setInt(1, m.getId());
+            stmt.setString(2, m.getDni());
+            stmt.setString(3, m.getNombre());
+            stmt.setString(4, m.getTelefono());
+            stmt.setObject(5, m.getEspecialidad());
             long filasAfectadas = stmt.executeLargeUpdate();
 
             return filasAfectadas > 0;
@@ -119,10 +120,11 @@ public class ObjetoDeAccesoADatosEnH2 implements IObjetoDeAcessoADatos {
     public boolean guardarEnfermera(final Enfermera e) {
         realizarConexionJDBC();
         try (PreparedStatement stmt = conexionJDBC.prepareStatement(
-                "INSERT INTO enfermeras (dni, nombre, telefono) VALUES (?, ?, ?)")) {
-            stmt.setString(1, e.getDni());
-            stmt.setString(2, e.getNombre());
-            stmt.setString(3, e.getTelefono());
+                "INSERT INTO enfermeras (id, dni, nombre, telefono) VALUES (?, ?, ?, ?)")) {
+            stmt.setInt(1, e.getId());
+            stmt.setString(2, e.getDni());
+            stmt.setString(3, e.getNombre());
+            stmt.setString(4, e.getTelefono());
             long filasAfectadas = stmt.executeLargeUpdate();
 
             return filasAfectadas > 0;
@@ -135,10 +137,11 @@ public class ObjetoDeAccesoADatosEnH2 implements IObjetoDeAcessoADatos {
     public boolean guardarParamedico(final Paramedico p) {
         realizarConexionJDBC();
         try (PreparedStatement stmt = conexionJDBC.prepareStatement(
-                "INSERT INTO paramedicos (dni, nombre, telefono) VALUES (?, ?, ?)")) {
-            stmt.setString(1, p.getDni());
-            stmt.setString(2, p.getNombre());
-            stmt.setString(3, p.getTelefono());
+                "INSERT INTO paramedicos (id, dni, nombre, telefono) VALUES (?, ?, ?, ?)")) {
+            stmt.setInt(1, p.getId());
+            stmt.setString(2, p.getDni());
+            stmt.setString(3, p.getNombre());
+            stmt.setString(4, p.getTelefono());
             long filasAfectadas = stmt.executeLargeUpdate();
 
             return filasAfectadas > 0;
@@ -151,13 +154,14 @@ public class ObjetoDeAccesoADatosEnH2 implements IObjetoDeAcessoADatos {
     public List<Medico> consultarMedicos() {
         realizarConexionJDBC();
         try (PreparedStatement stmt = conexionJDBC.prepareStatement(
-                "SELECT dni, nombre, telefono, especialidad FROM medicos")) {
+                "SELECT id, dni, nombre, telefono, especialidad FROM medicos")) {
             try (ResultSet rs = stmt.executeQuery()) {
                 rs.beforeFirst();
 
                 List<Medico> list = new LinkedList<>();
                 while (rs.next()) {
                     list.add(new Medico(
+                            rs.getInt("id"),
                             rs.getString("dni"),
                             rs.getString("nombre"),
                             rs.getString("telefono"),
@@ -198,13 +202,14 @@ public class ObjetoDeAccesoADatosEnH2 implements IObjetoDeAcessoADatos {
     public List<Enfermera> consultarEnfermeras() {
         realizarConexionJDBC();
         try (PreparedStatement stmt = conexionJDBC.prepareStatement(
-                "SELECT dni, nombre, telefono FROM enfermeras")) {
+                "SELECT id, dni, nombre, telefono FROM enfermeras")) {
             try (ResultSet rs = stmt.executeQuery()) {
                 rs.beforeFirst();
 
                 List<Enfermera> list = new LinkedList<>();
                 while (rs.next()) {
                     list.add(new Enfermera(
+                            rs.getInt("id"),
                             rs.getString("dni"),
                             rs.getString("nombre"),
                             rs.getString("telefono")));
@@ -220,13 +225,14 @@ public class ObjetoDeAccesoADatosEnH2 implements IObjetoDeAcessoADatos {
     public List<Paramedico> consultarParamedicos() {
         realizarConexionJDBC();
         try (PreparedStatement stmt = conexionJDBC.prepareStatement(
-                "SELECT dni, nombre, telefono FROM paramedicos")) {
+                "SELECT id, dni, nombre, telefono FROM paramedicos")) {
             try (ResultSet rs = stmt.executeQuery()) {
                 rs.beforeFirst();
 
                 List<Paramedico> list = new LinkedList<>();
                 while (rs.next()) {
                     list.add(new Paramedico(
+                            rs.getInt("id"),
                             rs.getString("dni"),
                             rs.getString("nombre"),
                             rs.getString("telefono")));
