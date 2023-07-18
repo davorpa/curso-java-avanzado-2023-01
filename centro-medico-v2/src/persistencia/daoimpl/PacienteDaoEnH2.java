@@ -2,10 +2,11 @@ package persistencia.daoimpl;
 
 import modelo.impl.Paciente;
 import persistencia.DAO;
+import persistencia.H2ConnectorSupport;
 
 import java.util.List;
 
-public class PacienteDaoEnH2 implements DAO<Paciente, String> {
+public class PacienteDaoEnH2 extends H2ConnectorSupport implements DAO<Paciente, String> {
     @Override
     public List<Paciente> consultarTodos() {
         //[1] cargar el controlador

@@ -8,7 +8,7 @@ import java.util.List;
  * @param <E> el tipo de dato que identifica los registros de entidad
  * @param <ID> el tipo de dato para los ID de dichas entidades
  */
-public interface DAO<E, ID> {
+public interface DAO<E, ID> extends AutoCloseable {
 
     /**
      * Obtiene todos los registros.

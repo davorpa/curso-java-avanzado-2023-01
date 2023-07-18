@@ -212,11 +212,12 @@ public class Main {
     }
 
 
-    public static void probarDaoH2ConPacientes() {
-        DAO<Paciente, String> dao = new PacienteDaoEnH2();
+    public static void probarDaoH2ConPacientes() throws Exception {
+        try (DAO<Paciente, String> dao = new PacienteDaoEnH2()) {
 
-        dao.consultarTodos().forEach(System.out::println);
+            dao.consultarTodos().forEach(System.out::println);
 
-        System.out.println(dao.consultarPorId("123A"));
+            System.out.println(dao.consultarPorId("123A"));
+        }
     }
 }
