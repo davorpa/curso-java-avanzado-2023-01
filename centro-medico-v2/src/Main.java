@@ -218,6 +218,20 @@ public class Main {
             dao.consultarTodos().forEach(System.out::println);
 
             System.out.println(dao.consultarPorId("123A"));
+            System.out.println(dao.consultarPorId("123"));
+
+            Paciente p1 = new Paciente("123A", "Paciente 4", "6545",
+                    LocalDate.of(1987, 5, 29),
+                    "0-");
+            System.out.println(dao.crear(p1));
+            System.out.println(dao.consultarPorId("123A"));
+
+            p1.setGrupoSanguineo("B+");
+            System.out.println(dao.actualizar(p1));
+            System.out.println(dao.consultarPorId("123A"));
+
+            System.out.println(dao.eliminar("123A"));
+            System.out.println(dao.consultarPorId("123A"));
         }
     }
 }
