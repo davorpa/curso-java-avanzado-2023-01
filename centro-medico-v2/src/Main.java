@@ -4,9 +4,11 @@ import modelo.impl.Enfermera;
 import modelo.impl.Medico;
 import modelo.impl.Paciente;
 import modelo.impl.Paramedico;
+import persistencia.IEnfermeraDAO;
 import persistencia.IMedicoDAO;
 import persistencia.IObjetoDeAcessoADatos;
 import persistencia.IPacienteDAO;
+import persistencia.daoimpl.EnfermeraDAOEnH2;
 import persistencia.daoimpl.MedicoDAOEnH2;
 import persistencia.daoimpl.PacienteDAOEnH2;
 import persistencia.impl.ObjetoDeAccesoADatos;
@@ -31,6 +33,7 @@ public class Main {
         probarAccesoADatosH2ConParamedicos();
         probarDaoH2ConPacientes();
         probarDaoH2ConMedicos();
+        probarDaoH2ConEnfermeras();
     }
 
     public static void probarBaseDeDatosConMedicosRepetidos() {
@@ -254,6 +257,27 @@ public class Main {
             System.out.println(dao.consultarPorId(666));
 
             m1.setNombre("Patricia Mendoza");
+            System.out.println(dao.actualizar(m1));
+            System.out.println(dao.consultarPorId(666));
+
+            System.out.println(dao.eliminar(666));
+            System.out.println(dao.consultarPorId(666));
+        }
+    }
+
+    public static void probarDaoH2ConEnfermeras() throws Exception {
+        try (IEnfermeraDAO dao = new EnfermeraDAOEnH2()) {
+
+            dao.consultarTodos().forEach(System.out::println);
+
+            System.out.println(dao.consultarPorId(666));
+            System.out.println(dao.consultarPorId(224));
+
+            Enfermera m1 = new Enfermera(666, "6498F", "Enfermera 4", "445");
+            System.out.println(dao.crear(m1));
+            System.out.println(dao.consultarPorId(666));
+
+            m1.setNombre("Ernestina Mendoza");
             System.out.println(dao.actualizar(m1));
             System.out.println(dao.consultarPorId(666));
 
