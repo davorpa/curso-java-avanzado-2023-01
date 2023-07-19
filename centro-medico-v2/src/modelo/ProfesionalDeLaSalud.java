@@ -6,7 +6,11 @@ public abstract class ProfesionalDeLaSalud extends Persona implements IProfesion
 
     private Integer id;
 
-    public ProfesionalDeLaSalud(Integer id, String dni, String nombre, String telefono) {
+    protected ProfesionalDeLaSalud(String dni, String nombre, String telefono) {
+        super(dni, nombre, telefono);
+    }
+
+    protected ProfesionalDeLaSalud(Integer id, String dni, String nombre, String telefono) {
         super(dni, nombre, telefono);
         setId(id);
     }

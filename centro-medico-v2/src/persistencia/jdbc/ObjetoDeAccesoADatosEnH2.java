@@ -11,6 +11,7 @@ import persistencia.PersistenciaException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,13 +21,20 @@ public class ObjetoDeAccesoADatosEnH2 extends H2ConnectorSupport implements IObj
     @Override
     public boolean guardarMedico(final Medico m) {
         try (PreparedStatement stmt = realizarConexionJDBC().prepareStatement(
-                "INSERT INTO profesional_de_la_salud (id, tipo, dni, nombre, telefono, especialidad) VALUES (?, 'M', ?, ?, ?, ?)")) {
-            stmt.setInt(1, m.getId());
-            stmt.setString(2, m.getDni());
-            stmt.setString(3, m.getNombre());
-            stmt.setString(4, m.getTelefono());
-            stmt.setObject(5, m.getEspecialidad());
+                "INSERT INTO profesional_de_la_salud (tipo, dni, nombre, telefono, especialidad) VALUES ('M', ?, ?, ?, ?)",
+                    Statement.RETURN_GENERATED_KEYS
+                )) {
+            stmt.setString(1, m.getDni());
+            stmt.setString(2, m.getNombre());
+            stmt.setString(3, m.getTelefono());
+            stmt.setObject(4, m.getEspecialidad());
             long filasAfectadas = stmt.executeLargeUpdate();
+
+            try (ResultSet rs = stmt.getGeneratedKeys()) {
+                rs.beforeFirst();
+                rs.next();
+                m.setId(rs.getInt(1));
+            }
 
             return filasAfectadas > 0;
         } catch (SQLException ex) {
@@ -54,12 +62,18 @@ public class ObjetoDeAccesoADatosEnH2 extends H2ConnectorSupport implements IObj
     @Override
     public boolean guardarEnfermera(final Enfermera e) {
         try (PreparedStatement stmt = realizarConexionJDBC().prepareStatement(
-                "INSERT INTO profesional_de_la_salud (id, tipo, dni, nombre, telefono) VALUES (?, 'E', ?, ?, ?)")) {
-            stmt.setInt(1, e.getId());
-            stmt.setString(2, e.getDni());
-            stmt.setString(3, e.getNombre());
-            stmt.setString(4, e.getTelefono());
+                "INSERT INTO profesional_de_la_salud (tipo, dni, nombre, telefono) VALUES ('E', ?, ?, ?)",
+                Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, e.getDni());
+            stmt.setString(2, e.getNombre());
+            stmt.setString(3, e.getTelefono());
             long filasAfectadas = stmt.executeLargeUpdate();
+
+            try (ResultSet rs = stmt.getGeneratedKeys()) {
+                rs.beforeFirst();
+                rs.next();
+                e.setId(rs.getInt(1));
+            }
 
             return filasAfectadas > 0;
         } catch (SQLException ex) {
@@ -70,12 +84,18 @@ public class ObjetoDeAccesoADatosEnH2 extends H2ConnectorSupport implements IObj
     @Override
     public boolean guardarParamedico(final Paramedico p) {
         try (PreparedStatement stmt = realizarConexionJDBC().prepareStatement(
-                "INSERT INTO profesional_de_la_salud (id, tipo, dni, nombre, telefono) VALUES (?, 'P', ?, ?, ?)")) {
-            stmt.setInt(1, p.getId());
-            stmt.setString(2, p.getDni());
-            stmt.setString(3, p.getNombre());
-            stmt.setString(4, p.getTelefono());
+                "INSERT INTO profesional_de_la_salud (tipo, dni, nombre, telefono) VALUES ('P', ?, ?, ?)",
+                Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, p.getDni());
+            stmt.setString(2, p.getNombre());
+            stmt.setString(3, p.getTelefono());
             long filasAfectadas = stmt.executeLargeUpdate();
+
+            try (ResultSet rs = stmt.getGeneratedKeys()) {
+                rs.beforeFirst();
+                rs.next();
+                p.setId(rs.getInt(1));
+            }
 
             return filasAfectadas > 0;
         } catch (SQLException ex) {

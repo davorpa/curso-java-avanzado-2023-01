@@ -176,9 +176,9 @@ public class Main {
 
     public static void probarAccesoADatosH2ConMedicos() throws Exception {
         try (IObjetoDeAcessoADatos baseDeDatos = new ObjetoDeAccesoADatosEnH2()) {
-            Medico m = new Medico(123,"123", "Médico 1", "321", Medico.ESPECIALIDAD_GENERALISTA);
-            Medico m2 = new Medico(124, "124", "Médico 2", "322", Medico.ESPECIALIDAD_GENERALISTA);
-            Medico m3 = new Medico(125, "125", "Médico 3", "323", Medico.ESPECIALIDAD_PEDIATRIA);
+            Medico m = new Medico("123", "Médico 1", "321", Medico.ESPECIALIDAD_GENERALISTA);
+            Medico m2 = new Medico("124", "Médico 2", "322", Medico.ESPECIALIDAD_GENERALISTA);
+            Medico m3 = new Medico("125", "Médico 3", "323", Medico.ESPECIALIDAD_PEDIATRIA);
 
             baseDeDatos.guardarMedico(m);
             baseDeDatos.guardarMedico(m2);
@@ -190,9 +190,9 @@ public class Main {
 
     public static void probarAccesoADatosH2ConEnfermeras() throws Exception {
         try (IObjetoDeAcessoADatos baseDeDatos = new ObjetoDeAccesoADatosEnH2()) {
-            Enfermera e = new Enfermera(223, "223", "Enfermera 1", "351");
-            Enfermera e2 = new Enfermera(224, "224", "Enfermera 2", "352");
-            Enfermera e3 = new Enfermera(225, "225", "Enfermera 3", "353");
+            Enfermera e = new Enfermera("223", "Enfermera 1", "351");
+            Enfermera e2 = new Enfermera("224", "Enfermera 2", "352");
+            Enfermera e3 = new Enfermera("225", "Enfermera 3", "353");
 
             baseDeDatos.guardarEnfermera(e);
             baseDeDatos.guardarEnfermera(e2);
@@ -204,9 +204,9 @@ public class Main {
 
     public static void probarAccesoADatosH2ConParamedicos() throws Exception {
         try (IObjetoDeAcessoADatos baseDeDatos = new ObjetoDeAccesoADatosEnH2()) {
-            Paramedico pm = new Paramedico(323, "323", "Paramédico 1", "357");
-            Paramedico pm2 = new Paramedico(324, "324", "Paramédico 2", "356");
-            Paramedico pm3 = new Paramedico(325, "325", "Paramédico 3", "355");
+            Paramedico pm = new Paramedico("323", "Paramédico 1", "357");
+            Paramedico pm2 = new Paramedico("324", "Paramédico 2", "356");
+            Paramedico pm3 = new Paramedico("325", "Paramédico 3", "355");
 
             baseDeDatos.guardarParamedico(pm);
             baseDeDatos.guardarParamedico(pm2);
@@ -249,18 +249,18 @@ public class Main {
             dao.consultarTodos().forEach(System.out::println);
 
             System.out.println(dao.consultarPorId(666));
-            System.out.println(dao.consultarPorId(123));
+            System.out.println(dao.consultarPorId(1));
 
-            Medico m1 = new Medico(666, "123A", "Médico 4", "965", Medico.ESPECIALIDAD_PEDIATRIA);
+            Medico m1 = new Medico("123A", "Médico 4", "965", Medico.ESPECIALIDAD_PEDIATRIA);
             System.out.println(dao.crear(m1));
-            System.out.println(dao.consultarPorId(666));
+            System.out.println(dao.consultarPorId(m1.getId()));
 
             m1.setNombre("Patricia Mendoza");
             System.out.println(dao.actualizar(m1));
-            System.out.println(dao.consultarPorId(666));
+            System.out.println(dao.consultarPorId(m1.getId()));
 
-            System.out.println(dao.eliminar(666));
-            System.out.println(dao.consultarPorId(666));
+            System.out.println(dao.eliminar(m1.getId()));
+            System.out.println(dao.consultarPorId(m1.getId()));
         }
     }
 
@@ -270,18 +270,18 @@ public class Main {
             dao.consultarTodos().forEach(System.out::println);
 
             System.out.println(dao.consultarPorId(666));
-            System.out.println(dao.consultarPorId(224));
+            System.out.println(dao.consultarPorId(4));
 
-            Enfermera m1 = new Enfermera(666, "6498F", "Enfermera 4", "445");
-            System.out.println(dao.crear(m1));
-            System.out.println(dao.consultarPorId(666));
+            Enfermera e1 = new Enfermera("6498F", "Enfermera 4", "445");
+            System.out.println(dao.crear(e1));
+            System.out.println(dao.consultarPorId(e1.getId()));
 
-            m1.setNombre("Ernestina Mendoza");
-            System.out.println(dao.actualizar(m1));
-            System.out.println(dao.consultarPorId(666));
+            e1.setNombre("Ernestina Mendoza");
+            System.out.println(dao.actualizar(e1));
+            System.out.println(dao.consultarPorId(e1.getId()));
 
-            System.out.println(dao.eliminar(666));
-            System.out.println(dao.consultarPorId(666));
+            System.out.println(dao.eliminar(e1.getId()));
+            System.out.println(dao.consultarPorId(e1.getId()));
         }
     }
 
@@ -291,18 +291,18 @@ public class Main {
             dao.consultarTodos().forEach(System.out::println);
 
             System.out.println(dao.consultarPorId(666));
-            System.out.println(dao.consultarPorId(325));
+            System.out.println(dao.consultarPorId(8));
 
-            Paramedico p1 = new Paramedico(666, "465382Q", "Paramédico 4", "555-8975");
+            Paramedico p1 = new Paramedico("465382Q", "Paramédico 4", "555-8975");
             System.out.println(dao.crear(p1));
-            System.out.println(dao.consultarPorId(666));
+            System.out.println(dao.consultarPorId(p1.getId()));
 
             p1.setNombre("José Ramón Garzés-Martín");
             System.out.println(dao.actualizar(p1));
-            System.out.println(dao.consultarPorId(666));
+            System.out.println(dao.consultarPorId(p1.getId()));
 
-            System.out.println(dao.eliminar(666));
-            System.out.println(dao.consultarPorId(666));
+            System.out.println(dao.eliminar(p1.getId()));
+            System.out.println(dao.consultarPorId(p1.getId()));
         }
     }
 }

@@ -11,6 +11,11 @@ public class Medico extends ProfesionalDeLaSalud {
 
     private String especialidad;
 
+    public Medico(String dni, String nombre, String telefono, String especialidad) {
+        super(dni, nombre, telefono);
+        setEspecialidad(especialidad);
+    }
+
     public Medico(Integer id, String dni, String nombre, String telefono, String especialidad) {
         super(id, dni, nombre, telefono);
         setEspecialidad(especialidad);

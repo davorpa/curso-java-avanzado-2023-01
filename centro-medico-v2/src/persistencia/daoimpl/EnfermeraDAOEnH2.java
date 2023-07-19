@@ -8,6 +8,7 @@ import persistencia.PersistenciaException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -63,12 +64,20 @@ public class EnfermeraDAOEnH2 extends H2ConnectorSupport implements IEnfermeraDA
     @Override
     public int crear(Enfermera o) {
         try (PreparedStatement stmt = realizarConexionJDBC().prepareStatement(
-                "INSERT INTO profesional_de_la_salud (id, tipo, dni, nombre, telefono) VALUES (?, 'E', ?, ?, ?)")) {
-            stmt.setInt(1, o.getId());
-            stmt.setString(2, o.getDni());
-            stmt.setString(3, o.getNombre());
-            stmt.setString(4, o.getTelefono());
-            return stmt.executeUpdate();
+                "INSERT INTO profesional_de_la_salud (tipo, dni, nombre, telefono) VALUES ('E', ?, ?, ?)",
+                Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, o.getDni());
+            stmt.setString(2, o.getNombre());
+            stmt.setString(3, o.getTelefono());
+            int filasAfectadas = stmt.executeUpdate();
+
+            try (ResultSet rs = stmt.getGeneratedKeys()) {
+                rs.beforeFirst();
+                rs.next();
+                o.setId(rs.getInt(1));
+            }
+
+            return filasAfectadas;
         } catch (SQLException ex) {
             throw new PersistenciaException("No se pudo insertar enfermera.", ex);
         }
