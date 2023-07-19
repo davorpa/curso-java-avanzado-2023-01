@@ -20,7 +20,7 @@ public class ObjetoDeAccesoADatosEnH2 extends H2ConnectorSupport implements IObj
     @Override
     public boolean guardarMedico(final Medico m) {
         try (PreparedStatement stmt = realizarConexionJDBC().prepareStatement(
-                "INSERT INTO medicos (id, dni, nombre, telefono, especialidad) VALUES (?, ?, ?, ?, ?)")) {
+                "INSERT INTO profesional_de_la_salud (id, tipo, dni, nombre, telefono, especialidad) VALUES (?, 'M', ?, ?, ?, ?)")) {
             stmt.setInt(1, m.getId());
             stmt.setString(2, m.getDni());
             stmt.setString(3, m.getNombre());
@@ -54,7 +54,7 @@ public class ObjetoDeAccesoADatosEnH2 extends H2ConnectorSupport implements IObj
     @Override
     public boolean guardarEnfermera(final Enfermera e) {
         try (PreparedStatement stmt = realizarConexionJDBC().prepareStatement(
-                "INSERT INTO enfermeras (id, dni, nombre, telefono) VALUES (?, ?, ?, ?)")) {
+                "INSERT INTO profesional_de_la_salud (id, tipo, dni, nombre, telefono) VALUES (?, 'E', ?, ?, ?)")) {
             stmt.setInt(1, e.getId());
             stmt.setString(2, e.getDni());
             stmt.setString(3, e.getNombre());
@@ -70,7 +70,7 @@ public class ObjetoDeAccesoADatosEnH2 extends H2ConnectorSupport implements IObj
     @Override
     public boolean guardarParamedico(final Paramedico p) {
         try (PreparedStatement stmt = realizarConexionJDBC().prepareStatement(
-                "INSERT INTO paramedicos (id, dni, nombre, telefono) VALUES (?, ?, ?, ?)")) {
+                "INSERT INTO profesional_de_la_salud (id, tipo, dni, nombre, telefono) VALUES (?, 'P', ?, ?, ?)")) {
             stmt.setInt(1, p.getId());
             stmt.setString(2, p.getDni());
             stmt.setString(3, p.getNombre());
@@ -86,7 +86,9 @@ public class ObjetoDeAccesoADatosEnH2 extends H2ConnectorSupport implements IObj
     @Override
     public List<Medico> consultarMedicos() {
         try (PreparedStatement stmt = realizarConexionJDBC().prepareStatement(
-                "SELECT id, dni, nombre, telefono, especialidad FROM medicos")) {
+                "SELECT id, dni, nombre, telefono, especialidad FROM profesional_de_la_salud WHERE tipo = ?")) {
+            stmt.setString(1, "M");
+
             try (ResultSet rs = stmt.executeQuery()) {
                 rs.beforeFirst();
 
@@ -132,7 +134,9 @@ public class ObjetoDeAccesoADatosEnH2 extends H2ConnectorSupport implements IObj
     @Override
     public List<Enfermera> consultarEnfermeras() {
         try (PreparedStatement stmt = realizarConexionJDBC().prepareStatement(
-                "SELECT id, dni, nombre, telefono FROM enfermeras")) {
+                "SELECT id, dni, nombre, telefono FROM profesional_de_la_salud WHERE tipo = ?")) {
+            stmt.setString(1, "E");
+
             try (ResultSet rs = stmt.executeQuery()) {
                 rs.beforeFirst();
 
@@ -154,7 +158,9 @@ public class ObjetoDeAccesoADatosEnH2 extends H2ConnectorSupport implements IObj
     @Override
     public List<Paramedico> consultarParamedicos() {
         try (PreparedStatement stmt = realizarConexionJDBC().prepareStatement(
-                "SELECT id, dni, nombre, telefono FROM paramedicos")) {
+                "SELECT id, dni, nombre, telefono FROM profesional_de_la_salud WHERE tipo = ?")) {
+            stmt.setString(1, "P");
+
             try (ResultSet rs = stmt.executeQuery()) {
                 rs.beforeFirst();
 

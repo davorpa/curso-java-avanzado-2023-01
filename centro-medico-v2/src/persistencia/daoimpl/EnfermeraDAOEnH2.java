@@ -15,7 +15,9 @@ public class EnfermeraDAOEnH2 extends H2ConnectorSupport implements IEnfermeraDA
     @Override
     public List<Enfermera> consultarTodos() {
         try (PreparedStatement stmt = realizarConexionJDBC().prepareStatement(
-                "SELECT id, dni, nombre, telefono FROM enfermeras")) {
+                "SELECT id, dni, nombre, telefono FROM profesional_de_la_salud WHERE tipo = ?")) {
+            stmt.setString(1, "E");
+
             try (ResultSet rs = stmt.executeQuery()) {
                 rs.beforeFirst();
 
@@ -33,8 +35,9 @@ public class EnfermeraDAOEnH2 extends H2ConnectorSupport implements IEnfermeraDA
     @Override
     public Enfermera consultarPorId(Integer id) {
         try (PreparedStatement stmt = realizarConexionJDBC().prepareStatement(
-                "SELECT id, dni, nombre, telefono FROM enfermeras WHERE id = ?")) {
+                "SELECT id, dni, nombre, telefono FROM profesional_de_la_salud WHERE id = ? AND tipo = ?")) {
             stmt.setInt(1, id);
+            stmt.setString(2, "E");
 
             try (ResultSet rs = stmt.executeQuery()) {
                 rs.beforeFirst();
@@ -60,7 +63,7 @@ public class EnfermeraDAOEnH2 extends H2ConnectorSupport implements IEnfermeraDA
     @Override
     public int crear(Enfermera o) {
         try (PreparedStatement stmt = realizarConexionJDBC().prepareStatement(
-                "INSERT INTO enfermeras (id, dni, nombre, telefono) VALUES (?, ?, ?, ?)")) {
+                "INSERT INTO profesional_de_la_salud (id, tipo, dni, nombre, telefono) VALUES (?, 'E', ?, ?, ?)")) {
             stmt.setInt(1, o.getId());
             stmt.setString(2, o.getDni());
             stmt.setString(3, o.getNombre());
@@ -74,11 +77,12 @@ public class EnfermeraDAOEnH2 extends H2ConnectorSupport implements IEnfermeraDA
     @Override
     public int actualizar(Enfermera o) {
         try (PreparedStatement stmt = realizarConexionJDBC().prepareStatement(
-                "UPDATE enfermeras SET dni = ?, nombre = ?, telefono = ? WHERE id = ?")) {
+                "UPDATE profesional_de_la_salud SET dni = ?, nombre = ?, telefono = ? WHERE id = ? AND tipo = ?")) {
             stmt.setString(1, o.getDni());
             stmt.setString(2, o.getNombre());
             stmt.setString(3, o.getTelefono());
             stmt.setInt(4, o.getId());
+            stmt.setString(5, "E");
             return stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new PersistenciaException("No se pudo modificar enfermera.", ex);
@@ -88,8 +92,9 @@ public class EnfermeraDAOEnH2 extends H2ConnectorSupport implements IEnfermeraDA
     @Override
     public int eliminar(Integer id) {
         try (PreparedStatement stmt = realizarConexionJDBC().prepareStatement(
-                "DELETE FROM enfermeras WHERE id = ?")) {
+                "DELETE FROM profesional_de_la_salud WHERE id = ? AND tipo = ?")) {
             stmt.setInt(1, id);
+            stmt.setString(2, "E");
             return stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new PersistenciaException("No se pudo eliminar enfermera.", ex);

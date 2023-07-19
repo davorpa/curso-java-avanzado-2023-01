@@ -15,7 +15,9 @@ public class ParamedicoDAOEnH2 extends H2ConnectorSupport implements IParamedico
     @Override
     public List<Paramedico> consultarTodos() {
         try (PreparedStatement stmt = realizarConexionJDBC().prepareStatement(
-                "SELECT id, dni, nombre, telefono FROM paramedicos")) {
+                "SELECT id, dni, nombre, telefono FROM profesional_de_la_salud WHERE tipo = ?")) {
+            stmt.setString(1, "P");
+
             try (ResultSet rs = stmt.executeQuery()) {
                 rs.beforeFirst();
 
@@ -33,8 +35,9 @@ public class ParamedicoDAOEnH2 extends H2ConnectorSupport implements IParamedico
     @Override
     public Paramedico consultarPorId(Integer id) {
         try (PreparedStatement stmt = realizarConexionJDBC().prepareStatement(
-                "SELECT id, dni, nombre, telefono FROM paramedicos WHERE id = ?")) {
+                "SELECT id, dni, nombre, telefono FROM profesional_de_la_salud WHERE id = ? AND tipo = ?")) {
             stmt.setInt(1, id);
+            stmt.setString(2, "P");
 
             try (ResultSet rs = stmt.executeQuery()) {
                 rs.beforeFirst();
@@ -60,7 +63,7 @@ public class ParamedicoDAOEnH2 extends H2ConnectorSupport implements IParamedico
     @Override
     public int crear(Paramedico o) {
         try (PreparedStatement stmt = realizarConexionJDBC().prepareStatement(
-                "INSERT INTO paramedicos (id, dni, nombre, telefono) VALUES (?, ?, ?, ?)")) {
+                "INSERT INTO profesional_de_la_salud (id, tipo, dni, nombre, telefono) VALUES (?, 'P', ?, ?, ?)")) {
             stmt.setInt(1, o.getId());
             stmt.setString(2, o.getDni());
             stmt.setString(3, o.getNombre());
@@ -74,11 +77,12 @@ public class ParamedicoDAOEnH2 extends H2ConnectorSupport implements IParamedico
     @Override
     public int actualizar(Paramedico o) {
         try (PreparedStatement stmt = realizarConexionJDBC().prepareStatement(
-                "UPDATE paramedicos SET dni = ?, nombre = ?, telefono = ? WHERE id = ?")) {
+                "UPDATE profesional_de_la_salud SET dni = ?, nombre = ?, telefono = ? WHERE id = ? AND tipo = ?")) {
             stmt.setString(1, o.getDni());
             stmt.setString(2, o.getNombre());
             stmt.setString(3, o.getTelefono());
             stmt.setInt(4, o.getId());
+            stmt.setString(5, "P");
             return stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new PersistenciaException("No se pudo modificar paramédico.", ex);
@@ -88,8 +92,9 @@ public class ParamedicoDAOEnH2 extends H2ConnectorSupport implements IParamedico
     @Override
     public int eliminar(Integer id) {
         try (PreparedStatement stmt = realizarConexionJDBC().prepareStatement(
-                "DELETE FROM paramedicos WHERE id = ?")) {
+                "DELETE FROM profesional_de_la_salud WHERE id = ? AND tipo = ?")) {
             stmt.setInt(1, id);
+            stmt.setString(2, "P");
             return stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new PersistenciaException("No se pudo eliminar paramédico.", ex);

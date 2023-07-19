@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS paramedicos;
 DROP TABLE IF EXISTS enfermeras;
 DROP TABLE IF EXISTS medicos;
+DROP TABLE IF EXISTS profesional_de_la_salud;
 DROP TABLE IF EXISTS pacientes;
 
 
@@ -12,27 +13,13 @@ CREATE TABLE IF NOT EXISTS pacientes (
     grupo_sanguineo    VARCHAR(2) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS medicos (
-    id                 INT PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS profesional_de_la_salud (
+    id                 INT PRIMARY KEY AUTO_INCREMENT,
+    tipo               VARCHAR(1) NOT NULL,
     dni                VARCHAR(15) NOT NULL,
     nombre             VARCHAR(255) NOT NULL,
     telefono           VARCHAR(15) NOT NULL,
-    especialidad       VARCHAR(50) NOT NULL,
-    UNIQUE (dni)
-);
-
-CREATE TABLE IF NOT EXISTS enfermeras (
-    id                 INT PRIMARY KEY,
-    dni                VARCHAR(15) NOT NULL,
-    nombre             VARCHAR(255) NOT NULL,
-    telefono           VARCHAR(15) NOT NULL,
-    UNIQUE (dni)
-);
-
-CREATE TABLE IF NOT EXISTS paramedicos (
-    id                 INT PRIMARY KEY,
-    dni                VARCHAR(15) NOT NULL,
-    nombre             VARCHAR(255) NOT NULL,
-    telefono           VARCHAR(15) NOT NULL,
-    UNIQUE (dni)
+    especialidad       VARCHAR(50) DEFAULT NULL,
+    UNIQUE (tipo, dni),
+    CHECK (tipo IN ('M', 'E', 'P')) -- M=Medico, E=Enfermera, P=Paramedico
 );

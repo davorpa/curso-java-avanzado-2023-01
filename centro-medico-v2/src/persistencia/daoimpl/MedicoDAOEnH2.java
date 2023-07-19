@@ -15,7 +15,9 @@ public class MedicoDAOEnH2 extends H2ConnectorSupport implements IMedicoDAO {
     @Override
     public List<Medico> consultarTodos() {
         try (PreparedStatement stmt = realizarConexionJDBC().prepareStatement(
-                "SELECT id, dni, nombre, telefono, especialidad FROM medicos")) {
+                "SELECT id, dni, nombre, telefono, especialidad FROM profesional_de_la_salud WHERE tipo = ?")) {
+            stmt.setString(1, "M");
+
             try (ResultSet rs = stmt.executeQuery()) {
                 rs.beforeFirst();
 
@@ -33,8 +35,9 @@ public class MedicoDAOEnH2 extends H2ConnectorSupport implements IMedicoDAO {
     @Override
     public Medico consultarPorId(Integer id) {
         try (PreparedStatement stmt = realizarConexionJDBC().prepareStatement(
-                "SELECT id, dni, nombre, telefono, especialidad FROM medicos WHERE id = ?")) {
+                "SELECT id, dni, nombre, telefono, especialidad FROM profesional_de_la_salud WHERE id = ? AND tipo = ?")) {
             stmt.setInt(1, id);
+            stmt.setString(2, "M");
 
             try (ResultSet rs = stmt.executeQuery()) {
                 rs.beforeFirst();
@@ -61,7 +64,7 @@ public class MedicoDAOEnH2 extends H2ConnectorSupport implements IMedicoDAO {
     @Override
     public int crear(Medico o) {
         try (PreparedStatement stmt = realizarConexionJDBC().prepareStatement(
-                "INSERT INTO medicos (id, dni, nombre, telefono, especialidad) VALUES (?, ?, ?, ?, ?)")) {
+                "INSERT INTO profesional_de_la_salud (id, tipo, dni, nombre, telefono, especialidad) VALUES (?, 'M', ?, ?, ?, ?)")) {
             stmt.setInt(1, o.getId());
             stmt.setString(2, o.getDni());
             stmt.setString(3, o.getNombre());
@@ -76,12 +79,13 @@ public class MedicoDAOEnH2 extends H2ConnectorSupport implements IMedicoDAO {
     @Override
     public int actualizar(Medico o) {
         try (PreparedStatement stmt = realizarConexionJDBC().prepareStatement(
-                "UPDATE medicos SET dni = ?, nombre = ?, telefono = ?, especialidad = ? WHERE id = ?")) {
+                "UPDATE profesional_de_la_salud SET dni = ?, nombre = ?, telefono = ?, especialidad = ? WHERE id = ? AND tipo = ?")) {
             stmt.setString(1, o.getDni());
             stmt.setString(2, o.getNombre());
             stmt.setString(3, o.getTelefono());
             stmt.setString(4, o.getEspecialidad());
             stmt.setInt(5, o.getId());
+            stmt.setString(6, "M");
             return stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new PersistenciaException("No se pudo modificar médico.", ex);
@@ -91,8 +95,9 @@ public class MedicoDAOEnH2 extends H2ConnectorSupport implements IMedicoDAO {
     @Override
     public int eliminar(Integer id) {
         try (PreparedStatement stmt = realizarConexionJDBC().prepareStatement(
-                "DELETE FROM medicos WHERE id = ?")) {
+                "DELETE FROM profesional_de_la_salud WHERE id = ? AND tipo = ?")) {
             stmt.setInt(1, id);
+            stmt.setString(2, "M");
             return stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new PersistenciaException("No se pudo eliminar médico.", ex);
