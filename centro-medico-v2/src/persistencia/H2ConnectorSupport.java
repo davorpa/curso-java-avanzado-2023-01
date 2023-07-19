@@ -2,9 +2,8 @@ package persistencia;
 
 import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.function.IntConsumer;
 
 public abstract class H2ConnectorSupport implements AutoCloseable {
 
@@ -72,4 +71,14 @@ public abstract class H2ConnectorSupport implements AutoCloseable {
             conexionJDBC.close();
         }
     }
+
+    protected void setGeneratedIdOn(PreparedStatement stmt, IntConsumer setter) throws SQLException {
+        try (ResultSet rs = stmt.getGeneratedKeys()) {
+            rs.beforeFirst();
+            rs.next();
+            setter.accept(rs.getInt(1));
+        }
+    }
+
+
 }

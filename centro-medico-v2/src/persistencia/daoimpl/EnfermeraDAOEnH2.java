@@ -71,11 +71,7 @@ public class EnfermeraDAOEnH2 extends H2ConnectorSupport implements IEnfermeraDA
             stmt.setString(3, o.getTelefono());
             int filasAfectadas = stmt.executeUpdate();
 
-            try (ResultSet rs = stmt.getGeneratedKeys()) {
-                rs.beforeFirst();
-                rs.next();
-                o.setId(rs.getInt(1));
-            }
+            setGeneratedIdOn(stmt, o::setId);
 
             return filasAfectadas;
         } catch (SQLException ex) {

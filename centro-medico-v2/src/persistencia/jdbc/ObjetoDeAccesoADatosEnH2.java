@@ -30,11 +30,7 @@ public class ObjetoDeAccesoADatosEnH2 extends H2ConnectorSupport implements IObj
             stmt.setObject(4, m.getEspecialidad());
             long filasAfectadas = stmt.executeLargeUpdate();
 
-            try (ResultSet rs = stmt.getGeneratedKeys()) {
-                rs.beforeFirst();
-                rs.next();
-                m.setId(rs.getInt(1));
-            }
+            setGeneratedIdOn(stmt, m::setId);
 
             return filasAfectadas > 0;
         } catch (SQLException ex) {
@@ -69,11 +65,7 @@ public class ObjetoDeAccesoADatosEnH2 extends H2ConnectorSupport implements IObj
             stmt.setString(3, e.getTelefono());
             long filasAfectadas = stmt.executeLargeUpdate();
 
-            try (ResultSet rs = stmt.getGeneratedKeys()) {
-                rs.beforeFirst();
-                rs.next();
-                e.setId(rs.getInt(1));
-            }
+            setGeneratedIdOn(stmt, e::setId);
 
             return filasAfectadas > 0;
         } catch (SQLException ex) {
@@ -91,11 +83,7 @@ public class ObjetoDeAccesoADatosEnH2 extends H2ConnectorSupport implements IObj
             stmt.setString(3, p.getTelefono());
             long filasAfectadas = stmt.executeLargeUpdate();
 
-            try (ResultSet rs = stmt.getGeneratedKeys()) {
-                rs.beforeFirst();
-                rs.next();
-                p.setId(rs.getInt(1));
-            }
+            setGeneratedIdOn(stmt, p::setId);
 
             return filasAfectadas > 0;
         } catch (SQLException ex) {
